@@ -1,0 +1,40 @@
+server:
+  port: 8765
+  
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+      - id : order
+        uri: lb://ORDERPLACESERVICE
+        predicates:
+        - Path=/order/**
+      - id : searchfood
+        uri: lb://SPRING-FOOD-SERVICE
+        predicates:
+        - Path=/items/**
+      - id : payment
+        uri: lb://BANKINGAPPLICATION
+        predicates:
+        - Path=/account/**
+      - id : batch
+        uri: lb://ITEM-UPLOAD-SERVICE
+        predicates:
+        - Path=/batch/**
+      - id : HistoryService
+        uri: lb://ORDERHISTORYSERVICE
+        predicates:
+        - Path=/history/**
+          
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    prefer-ip-address: true
+      
+
